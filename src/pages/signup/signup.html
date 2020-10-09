@@ -8,13 +8,15 @@
   <form [formGroup]="formGroup" (ngSubmit)="signupUser(); $event.preventDefault()">
     <ion-item>
       <ion-label stacked>Nome*</ion-label>
-      <ion-input formControlName="nome" type="text"></ion-input>
+      <ion-input formControlName="name" type="text"></ion-input>
     </ion-item>
+    <p class="danger" *ngIf="formGroup.controls.name.dirty && formGroup.controls.name.errors" margin-left>Valor inválido</p>
     <ion-item>
       <ion-label stacked>Email*</ion-label>
       <ion-input formControlName="email" type="text"></ion-input>
     </ion-item>
-    <ion-list radio-group formControlName="tipo">
+    <p class="danger" *ngIf="formGroup.controls.email.dirty && formGroup.controls.email.errors" margin-left>Valor inválido</p>
+    <ion-list radio-group formControlName="type">
       <ion-list-header>
         Tipo de cliente
       </ion-list-header>
@@ -30,43 +32,49 @@
 
     <ion-item>
       <ion-label stacked>CPF ou CNPJ</ion-label>
-      <ion-input formControlName="cpfOuCnpj" type="text"></ion-input>
+      <ion-input formControlName="cpforCnpj" type="text"></ion-input>
     </ion-item>
+    <p class="danger" *ngIf="formGroup.controls.cpforCnpj.dirty && formGroup.controls.cpforCnpj.errors" margin-left>Valor inválido</p>
     <ion-item>
       <ion-label stacked>Senha*</ion-label>
-      <ion-input formControlName="senha" type="password"></ion-input>
+      <ion-input formControlName="password" type="password"></ion-input>
     </ion-item> 
+    <p class="danger" *ngIf="formGroup.controls.password.dirty && formGroup.controls.password.errors" margin-left>Valor inválido</p>
     <ion-item>
       <ion-label stacked>Logradouro*</ion-label>
-      <ion-input formControlName="logradouro" type="text"></ion-input>
+      <ion-input formControlName="publicPlace" type="text"></ion-input>
     </ion-item>
+    <p class="danger" *ngIf="formGroup.controls.publicPlace.dirty && formGroup.controls.publicPlace.errors" margin-left>Valor inválido</p>
     <ion-item>
       <ion-label stacked>Número*</ion-label>
-      <ion-input formControlName="numero" type="text"></ion-input>
+      <ion-input formControlName="number" type="text"></ion-input>
     </ion-item>
+    <p class="danger" *ngIf="formGroup.controls.number.dirty && formGroup.controls.number.errors" margin-left>Valor inválido</p>
     <ion-item>
       <ion-label stacked>Complemento</ion-label>
-      <ion-input formControlName="complemento" type="text"></ion-input>
+      <ion-input formControlName="complement" type="text"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label stacked>Bairro</ion-label>
-      <ion-input formControlName="bairro" type="text"></ion-input>
+      <ion-input formControlName="district" type="text"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label stacked>CEP*</ion-label>
       <ion-input formControlName="cep" type="text"></ion-input>
     </ion-item>
+    <p class="danger" *ngIf="formGroup.controls.cep.dirty && formGroup.controls.cep.errors" margin-left>Valor inválido</p>
     <ion-item>
       <ion-label stacked>Telefone 1*</ion-label>
-      <ion-input formControlName="telefone1" type="text"></ion-input>
+      <ion-input formControlName="phone1" type="text"></ion-input>
     </ion-item>
+    <p class="danger" *ngIf="formGroup.controls.phone1.dirty && formGroup.controls.phone1.errors" margin-left>Valor inválido</p>
     <ion-item>
       <ion-label stacked>Telefone 2</ion-label>
-      <ion-input formControlName="telefone2" type="text"></ion-input>
+      <ion-input formControlName="phone2" type="text"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label stacked>Telefone 3</ion-label>
-      <ion-input formControlName="telefone3" type="text"></ion-input>
+      <ion-input formControlName="phone3" type="text"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label stacked>Estado*</ion-label>
@@ -80,6 +88,6 @@
         <ion-option *ngFor="let cidade of cidades" [value]="cidade.id">{{cidade.name}}</ion-option>
       </ion-select>
     </ion-item>
-    <button ion-button block type="submit">Criar conta</button>
+    <button ion-button block type="submit" [disabled]="formGroup.invalid">Criar conta</button>
   </form>
 </ion-content>

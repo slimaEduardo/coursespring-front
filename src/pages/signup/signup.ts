@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { CidadeDTO } from '../../models/cidade.dto';
 import { EstadoDTO } from '../../models/estado.dto';
 import { CidadeService } from '../../services/domain/cidade.service';
+import { ClienteService } from '../../services/domain/cliente.service';
 import { EstadoService } from '../../services/domain/estado.service';
 
 /**
@@ -28,29 +29,49 @@ export class SignupPage {
     public navParams: NavParams, 
     public formBuilder: FormBuilder, 
     public cidadeService: CidadeService, 
-    public estadoService: EstadoService) {
+    public estadoService: EstadoService,
+    public clienteService: ClienteService,
+    public alertCtrl: AlertController) {
 
     this.formGroup = this.formBuilder.group({
-      nome: ['',[Validators.required, Validators.minLength(5),Validators.maxLength(120)]],
-      email: ['',[Validators.required, Validators.email]],
-      tipo : ['1', [Validators.required]],
-      cpfOuCnpj : ['', [Validators.required, Validators.minLength(11), Validators.maxLength(14)]],
-      senha : ['', [Validators.required]],
-      logradouro : ['', [Validators.required]],
-      numero : ['', [Validators.required]],
-      complemento : ['', []],
-      bairro : ['', []],
-      cep : ['', [Validators.required]],
-      telefone1 : ['', [Validators.required]],
-      telefone2 : ['', []],
-      telefone3 : ['', []],
+      name: ['João Santos',[Validators.required, Validators.minLength(5),Validators.maxLength(120)]],
+      email: ['joao@gmail.com',[Validators.required, Validators.email]],
+      type : ['1', [Validators.required]],
+      cpforCnpj : ['02403926043', [Validators.required, Validators.minLength(11), Validators.maxLength(14)]],
+      password : ['123', [Validators.required]],
+      publicPlace : ['Rua Moquetá', [Validators.required]],
+      number : ['9', [Validators.required]],
+      complement : ['', []],
+      district : ['', []],
+      cep : ['26285240', [Validators.required]],
+      phone1 : ['71123456789', [Validators.required]],
+      phone2 : ['', []],
+      phone3 : ['', []],
       estadoId : [null, [Validators.required]],
       cidadeId : [null, [Validators.required]]      
     })
   }
 
   signupUser(){
-    console.log("Form Enviado");
+    this.clienteService.insert(this.formGroup.value)
+    .subscribe(response => {
+      this.showInsertOk();
+    },
+    error => {});
+  }
+  showInsertOk() {
+    let alert = this.alertCtrl.create({
+      title: 'Sucesso',
+      message: 'Cadastro realizado com sucesso.',
+      enableBackdropDismiss: false,
+      buttons: [{
+        text: 'Ok',
+        handler: () => {
+          this.navCtrl.pop();
+        }
+      }]
+    });
+    alert.present();
   }
 
   ionViewDidLoad() {

@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Thumbnail } from 'ionic-angular';
 import { EnderecoDTO } from '../../models/endereco.dto';
+import { PedidoDTO } from '../../models/pedido.dto';
+import { CartService } from '../../services/domain/cart.service';
+import { ClienteService } from '../../services/domain/cliente.service';
+import { StorageService } from '../../services/storage.service';
 
 /**
  * Generated class for the PickAddressPage page.
@@ -18,44 +22,46 @@ export class PickAddressPage {
 
   items : EnderecoDTO[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  pedido : PedidoDTO;
+
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public storage: StorageService, 
+    public clienteService: ClienteService,
+    public cartService: CartService) {
   }
 
   ionViewDidLoad() {
-    this.items = [
-      {
-        id: "1",
-        publicPlace: "Rua Quinze de Novembro",
-        number: "300",
-        complement: "Apto 200",
-        district: "Santa Mônica",
-        cep: "48293822",
-        city: {
-          id: "1",
-          name: "Uberlândia",
-          state: {
-            id: "1",
-            name: "Minas Gerais"
+    let localUser = this.storage.getLocalUser();
+    if (localUser && localUser.email) {
+        this.clienteService.findByEmail(localUser.email)
+        .subscribe(response => {
+          this.items = response['addresses'];
+
+          let cart = this.cartService.getCart();
+
+          this.pedido = {
+            client: {id: response['id']},
+            deliveryAddress: null,
+            payment: null,
+            items: cart.items.map(x => { return {quantity: x.quantity, product: {id: x.product.id}}}),
           }
-        }
-      },
-      {
-        id: "2",
-        publicPlace: "Rua Alexandre Toledo da Silva",
-        number: "405",
-        complement: null,
-        district: "Centro",
-        cep: "88933822",
-        city: {
-          id: "3",
-          name: "São Paulo",
-          state: {
-            id: "2",
-            name: "São Paulo"
+        },
+        error => {
+          if(error.status == 403){
+            this.navCtrl.setRoot('HomePage');
           }
-        }
-      }
-    ];
+        });
+    }
+    else{
+      this.navCtrl.setRoot('HomePage');
+    }
+  }
+   
+  nextPage(item: EnderecoDTO){
+    this.pedido.deliveryAddress = {id: item.id};
+    this.navCtrl.push('PaymentPage', {pedido: this.pedido});
+    
   }
 
 }

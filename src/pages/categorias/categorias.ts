@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { API_CONFIG } from '../../config/api.config';
 import { CategoriaDTO } from '../../models/categoria.dto';
 import { CategoriaService } from '../../services/domain/categoria.service';
@@ -21,19 +21,31 @@ export class CategoriasPage {
   bucketUrl : string = API_CONFIG.bucketBaseUrl;
   items: CategoriaDTO[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public categoriaService: CategoriaService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public categoriaService: CategoriaService, public loadController: LoadingController) {
   }
 
   ionViewDidLoad() {
+    let loader = this.presentLoading();
     this.categoriaService.findAll().
     subscribe(response => {
       this.items = response;
+      loader.dismiss();
     }, 
-    error => {});
+    error => {
+      loader.dismiss();
+    });
   
   }
 
   showProdutos(categoria_id : string){
     this.navCtrl.push(`ProdutosPage`, {categoria_id: categoria_id});
+  }
+
+  presentLoading(){
+    let loader = this.loadController.create({
+      content: "Aguarde...",
+     });
+    loader.present();
+    return loader;
   }
 }

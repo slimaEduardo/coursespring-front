@@ -2,7 +2,6 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS
 import { Injectable } from "@angular/core";
 import { AlertController } from "ionic-angular";
 import { Observable } from "rxjs";
-import { onErrorResumeNext } from "rxjs/operators";
 import { FieldMessage } from "../models/fieldmessage";
 import { StorageService } from "../services/storage.service";
 

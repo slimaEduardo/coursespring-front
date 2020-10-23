@@ -1,7 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { onErrorResumeNext } from "rxjs/operators";
 import { API_CONFIG } from "../config/api.config";
 import { StorageService } from "../services/storage.service";
 

@@ -5,7 +5,7 @@ import { API_CONFIG } from '../../config/api.config';
 import { ClienteDTO } from '../../models/cliente.dto';
 import { ClienteService } from '../../services/domain/cliente.service';
 import { StorageService } from '../../services/storage.service';
-import { DomSanitizer } from '@angular/platform-browser';
+
 
 /**
  * Generated class for the ProfilePage page.
@@ -30,8 +30,7 @@ export class ProfilePage {
     public storage: StorageService, 
     public clienteService : ClienteService, 
     public loadController: LoadingController,
-    public camera: Camera,
-    private domSanitizer: DomSanitizer) {
+    public camera: Camera) {
   }
 
   ionViewDidLoad() {
@@ -96,6 +95,26 @@ export class ProfilePage {
     });
   }
 
+  getGaleryPicture(){
+
+    this.cameraOn = true;
+    const options: CameraOptions = {
+      quality: 100,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.PNG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+    this.picture = 'data:image/png;base64,' + imageData;
+     this.cameraOn = false;
+    }, (err) => {
+     // Handle error
+     console.log("Camera issue: " + err);
+    });
+  }
+
   sendPicture(){
     this.clienteService.uploadPicture(this.picture).subscribe(response => {
       this.picture = null;
@@ -107,5 +126,6 @@ export class ProfilePage {
   cancel(){
     this.picture = null;
   }
+
 }
 

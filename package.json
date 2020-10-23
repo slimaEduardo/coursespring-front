@@ -13,8 +13,8 @@
   "dependencies": {
     "@angular/animations": "5.2.11",
     "@angular/common": "5.2.11",
-    "@angular/compiler": "5.2.11",
-    "@angular/compiler-cli": "^10.1.6",
+    "@angular/compiler": "^5.2.11",
+    "@angular/compiler-cli": "^5.2.11",
     "@angular/core": "5.2.11",
     "@angular/forms": "5.2.11",
     "@angular/http": "^7.2.16",
@@ -42,8 +42,9 @@
     "zone.js": "0.8.29"
   },
   "devDependencies": {
+    "@angular/cli": "^10.2.0",
     "@ionic/app-scripts": "3.2.4",
-    "typescript": "2.6.2"
+    "typescript": "^2.6.2"
   },
   "description": "An Ionic project",
   "cordova": {
